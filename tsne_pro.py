@@ -23,11 +23,6 @@ def tsne_visual(pltdata):
     plt.plot(x2, y2, 'o', color="#b41f87", label='negative', markersize='3')
     plt.xlabel('Dimension1', fontsize=9)
     plt.ylabel('Dimension2', fontsize=9)
-    # left, right = plt.gca().get_xlim()
-    # top, bottom = plt.gca().get_ylim()
-    # plt.xlim((left*1.5, right*1.5))
-    # plt.ylim((top*1.3, bottom*1.3))
-    # plt.title(title, fontsize=12)
     plt.margins(0.3)
     plt.legend(loc="upper right")
     
