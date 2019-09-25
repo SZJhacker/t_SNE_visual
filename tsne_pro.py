@@ -47,7 +47,7 @@ def tsne_data(rawdata):
 def main():
     parser = argparse.ArgumentParser(description="Visualzes the features based on t-sne in a 2D feature space")
     parser.add_argument('-i', '--infile', help="The input file should be csv format, and multiple file should be separated by commas", required=True)
-    parser.add_argument('-o', '--outfile', help='The name of output picture')
+    parser.add_argument('-o', '--outfile', help='The name of output picture', required=True)
     parser.add_argument('-l', '--layout', help='The layout of subplots, please input row,column number, default 1,1 ', default='1,1')
     parser.add_argument('-d', '--dpi', help='The dpi of output picture, default is 300dpi', default=300)
     args = parser.parse_args()
