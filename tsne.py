@@ -24,7 +24,7 @@ def svm_hyperplane(X, y):
     # 绘制数据点，不同类别不同颜色
     color = ['orange' if c == 0 else 'blue' for c in y]
     labels = ['negative' if c == 0 else 'positve' for c in y]
-    plt.scatter(X_std[:,0], X_std[:,1], c=color)
+    plt.scatter(X_std[:, 0], X_std[:, 1], c=color)
     plt.xlabel('Dimension1', fontsize=9)
     plt.ylabel('Dimension2', fontsize=9)
     left, right = plt.gca().get_xlim()
