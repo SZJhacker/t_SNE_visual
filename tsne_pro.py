@@ -18,7 +18,7 @@ def tsne_visual(pltdata):
     x2 = p2.values[:, 0]
     y2 = p2.values[:, 1]
 
-    #绘制散点图
+    # 绘制散点图
     plt.plot(x1, y1, 'o', color="#3dbde2", label='positive', markersize='3')
     plt.plot(x2, y2, 'o', color="#b41f87", label='negative', markersize='3')
     plt.xlabel('Dimension1', fontsize=9)
@@ -38,7 +38,8 @@ def tsne_data(rawdata):
     redu_data = np.vstack((redu_fea.T, labels.T)).T  #将特征向量和正反例标签整合
     tsne_df = pd.DataFrame(
         data=redu_data, columns=['Dimension1', 'Dimension2', "label"])
-    tsne_visual(tsne_df)
+    
+    return tsne_df
 
 
 def main():
@@ -64,34 +65,35 @@ def main():
         '--dpi',
         help='The dpi of output picture, default is 300dpi',
         default=300)
+    # parser.add_argument(
+    #     '-t',
+    #     '--tsnefile',
+    #     help='The name of output file, which save the results are reduced by t-SNE')
+    
     args = parser.parse_args()
 
     infile_list = args.infile.split(',')  # 获得文件名列表
-    # title = [i.replace(r'.csv', '') for i in infile_list] # 以文件名为图片子标题列表
+    outfile_list = [i.replace(r'.csv', 'tsne.csv') for i in infile_list] # tnse降维之后的文件名
+
     row, column = [int(i) for i in args.layout.split(',')]
     assert len(
         infile_list
     ) <= row * column, "The number of inputfile to be drawn is not greater than the number of subplots of the canvas, please set '-l' parameter"
 
-    # if numb > 1:
-    #     for i in range(numb):
-    #         plt.subplot(row, column, i+1)
-    #         plt.subplots_adjust(wspace =0.3, hspace =0.35) #调节子图之间的宽度
-    #         process(infile_list[i])
-    # else:
-    #     process(infile_list[0])
-
-    # 通过循环对各个文件进行处理，使用数字索引是为了确定子画布的位置
     plt.figure(figsize=(column * 4.7, row * 3))  #设置画布的尺寸
 
+    # 遍历所有文件，进行降维，绘图处理，使用数字索引是为了确定子画布的位置
     for i in range(len(infile_list)):
         plt.subplot(row, column, i + 1)
         csvdata = pd.read_csv(infile_list[i])
-        tsne_data(csvdata)
+        tsne_df = tsne_data(csvdata)
+        tsne_visual(tsne_df)
+        tsne_df.to_csv(outfile_list[i], index=False)
 
+    # 调节子图之间的距离
     plt.subplots_adjust(
         top=0.92, bottom=0.20, left=0.15, right=0.95, hspace=0.20,
-        wspace=0.20)  # 调整子图之间的分布
+        wspace=0.20)  
     plt.savefig(args.outfile, dpi=args.dpi)
 
 
