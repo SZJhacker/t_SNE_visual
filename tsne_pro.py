@@ -8,7 +8,7 @@ import numpy as np
 import argparse
 
 
-def tsne_visual(pltdata):
+def scatter_visual(pltdata):
     """对t-SNE降维的数据进行可视化"""
 
     p1 = pltdata[(pltdata.label == "positive")]
@@ -33,8 +33,7 @@ def tsne_data(rawdata):
 
     fea_data = rawdata.drop(columns=['class'])  #取出所有特征向量用于降维
     redu_fea = modle.fit_transform(fea_data)  #将数据降到2维进行后期的可视化处理
-    labels = rawdata['class'].replace(
-        [0, 1], ['negative', 'positive'])  #将正反例数字替换成正反例标签用于收起展示
+    labels = rawdata['class']
     redu_data = np.vstack((redu_fea.T, labels.T)).T  #将特征向量和正反例标签整合
     tsne_df = pd.DataFrame(
         data=redu_data, columns=['Dimension1', 'Dimension2', "label"])
@@ -87,7 +86,7 @@ def main():
         plt.subplot(row, column, i + 1)
         csvdata = pd.read_csv(infile_list[i])
         tsne_df = tsne_data(csvdata)
-        tsne_visual(tsne_df)
+        scatter_visual(tsne_df)
         tsne_df.to_csv(outfile_list[i], index=False)
 
     # 调节子图之间的距离
